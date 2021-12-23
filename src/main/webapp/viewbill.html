@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <title>Menu</title>
+
+    <style>
+
+        ::placeholder{
+            color: #000000;
+        }
+        .logout_button{
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            width: 150px;
+            height: 50px;
+            box-shadow: 2px 2px 5px #5a6268;
+            border-radius: 10px;
+        }
+        .container {
+            position: center;
+            right: 0;
+            margin: 20px;
+            max-width: 300px;
+            padding: 16px;
+            background-color: white;
+        }
+    </style>
+</head>
+
+<style>
+    body {
+        background-color: aquamarine;
+        min-height: 380px;
+
+        /* Center and scale the image nicely */
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        position: relative;
+    }
+</style>
+
+<form>
+    <button id="logout_button" class="logout_button btn btn-block btn-lg btn-primary" type="button" onclick="location.href='home.html';"><i class="fas fa-sign-out-alt"></i>
+        Logout</button>
+</form>
+<form id="readform">
+    <b>Your choice ...</b>
+    <br>
+    <br>
+    <input type="radio" name="choice" id="read" value="BillDETAILS"> <b>Bill Details</b>
+    <div>
+        <p id="p1" class="tg1">
+        <table class="table table-striped table-hover tg2" id="table1">
+
+        </table>
+        </p>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <input type="radio" name="choice" id="update2" value="Student"> <b>Student Details</b>
+    <div>
+        <p id="p2" class="tg1">
+        <table class="table table-striped table-hover tg2" id="table2">
+
+        </table>
+        </p>
+    </div>
+    <br>
+    <br>
+    <br>
+    <input type="radio" name="choice" id="update3" value="Course"> <b>Course Details</b>
+    <div>
+        <p id="p3" class="tg1">
+        <table class="table table-striped table-hover tg2" id="table3">
+
+        </table>
+        </p>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <button type="submit">Submit Answer</button>
+    <br>
+    <br>
+</form>
+
+</body>
+
+<script>
+    var form=document.getElementById('readform')
+    form.addEventListener('submit',async function (event) {
+        event.preventDefault()
+        console.log("reached")
+        if(document.getElementById('update2').checked)
+        {
+
+        }
+        else if(document.getElementById('read').checked)
+        {
+            let response = await fetch("http://localhost:9080/ProjectESD_war/api/bill/display")
+            console.log("response is :", response);
+            let bills = await response.json();
+
+            let p1 = document.getElementById('p1');
+            let table = document.getElementById('table1');
+
+            p1.innerHTML = '<b> Bills details </b> <br>';
+
+            table.innerHTML = '';
+            let row = table.insertRow(0);
+            let cell1 = row.insertCell(0);
+            let cell2 = row.insertCell(1);
+            let cell3 = row.insertCell(2);
+
+            cell1.innerHTML = "<b> Bill_ID </b>";
+            cell2.innerHTML = "<b> Billed_Date </b>";
+            cell3.innerHTML = "<b> Paid_Amount </b>";
+
+            for (let i = 0; i < bills.length; i++) {
+                let row = table.insertRow(i + 1);
+                values=Object.values(bills[i])
+
+                for(let j=0;j<=2;j++) {
+                    console.log("entered")
+                    let cell = row.insertCell(j);
+                    cell.innerHTML = values[j];
+                    console.log(values[j])
+                }
+            }
+
+        }
+        else if(document.getElementById('update3').checked)
+        {
+
+        }
+    })
+</script>
+</html>
